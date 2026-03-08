@@ -28,7 +28,7 @@ src/
 
 ```bash
 git clone <repo-url>
-cd backend
+cd crypto_exchange_project-backend
 npm install
 cp .env.example .env
 docker-compose up -d

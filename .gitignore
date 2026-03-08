@@ -1,19 +1,16 @@
-# ========== โฟลเดอร์/ไฟล์ที่ไม่ส่งขึ้น GitHub ==========
-
-# เอกสาร / PRD / diagram / โจทย์
+# Docs / PRD / exam (excluded from repo)
 docs/
-backend/docs/
 crypto-exchange-prd.md
 dbdiagram.io.md
 exam_test_backend.md
 
-# สคริปต์ทดสอบ / คำสั่ง test
-backend/scripts/
+# Test scripts
+scripts/
 
 # Dependencies
 node_modules/
 
-# Build output
+# Build
 dist/
 build/
 *.tsbuildinfo

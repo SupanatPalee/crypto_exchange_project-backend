@@ -48,21 +48,59 @@ Use values from `.env.example` (matches docker-compose: `crypto` / `crypto_secre
 
 ## API Overview
 
+**Swagger:** http://localhost:3000/api
+
+### App
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | / | Health / hello |
+
+### Auth (public: register, login, refresh, logout)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | /auth/register | Register (returns access_token + refresh_token) |
-| POST | /auth/login | Login |
-| POST | /auth/refresh | Issue new tokens with refresh_token |
+| POST | /auth/login | Login (returns access_token + refresh_token) |
+| POST | /auth/refresh | Issue new tokens with refresh_token (body: `{ "refreshToken": "..." }`) |
 | POST | /auth/logout | Revoke refresh_token |
-| GET | /auth/me | Current user |
-| GET | /wallets | List wallets with currency |
-| GET | /wallets/by-currency/:currency | Wallet by currency code |
-| GET | /wallets/:id/transactions | Transaction history |
-| GET | /ads | List ads (?type=SELL&crypto=BTC) |
-| GET | /orders/:id | Order with relations |
-| GET | /disputes/:id | Dispute |
+| GET | /auth/me | Current user (Bearer required) |
 
-**Swagger:** http://localhost:3000/api
+### Wallets (Bearer required)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /wallets | List my wallets with currency |
+| GET | /wallets/by-currency/:currency | My wallet by currency code (e.g. BTC, THB) |
+| GET | /wallets/:id/transactions | Transaction history for wallet |
+
+### Ads
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /ads | List ads, public (?type=SELL&crypto=BTC) |
+| GET | /ads/:id | Get ad by id, public |
+| POST | /ads | Create ad (Bearer required) |
+| PATCH | /ads/:id | Update ad (Bearer required) |
+| DELETE | /ads/:id | Cancel ad (Bearer required) |
+
+### Orders (Bearer required)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /orders | Create order from an ad |
+| GET | /orders/:id | Get order with details (ad, buyer, seller, transactions) |
+| PATCH | /orders/:id/paid | Mark order as paid (buyer; body: paymentProof) |
+| PATCH | /orders/:id/release | Release crypto to buyer (seller) |
+| PATCH | /orders/:id/cancel | Cancel order (buyer or seller) |
+
+### Transfers (Bearer required)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /transfers/internal | Internal transfer to another user |
+| POST | /transfers/external | External withdraw to address |
+
+### Disputes (Bearer required)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /disputes | Create dispute for an order |
+| GET | /disputes/:id | Get dispute by id |
+| PATCH | /disputes/:id/resolve | Resolve dispute (body: resolution, winner) |
 
 ## Seed Data
 

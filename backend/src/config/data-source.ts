@@ -10,7 +10,7 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || 'crypto',
   password: process.env.DB_PASSWORD || 'crypto_secret',
   database: process.env.DB_NAME || 'crypto_exchange',
-  entities: [], // ไม่โหลด entities ตอนรัน migration (ใช้แค่ไฟล์ migration)
+  entities: [],
   migrations: ['src/database/migrations/*{.ts,.js}'],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',

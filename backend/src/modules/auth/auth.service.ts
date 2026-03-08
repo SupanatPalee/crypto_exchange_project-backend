@@ -93,7 +93,6 @@ export class AuthService {
     };
   }
 
-  /** Exchange a valid refresh token for new access + refresh tokens (rotation). */
   async refresh(refreshToken: string): Promise<AuthTokens> {
     let payload: { sub?: string; type?: string; jti?: string };
     try {
@@ -117,7 +116,6 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    // Revoke used token (rotation)
     record.revokedAt = new Date();
     await this.refreshTokenRepo.save(record);
 
@@ -133,7 +131,6 @@ export class AuthService {
     };
   }
 
-  /** Revoke a refresh token (logout). Idempotent: already revoked is OK. */
   async logout(refreshToken: string): Promise<{ message: string }> {
     try {
       const payload = this.jwtService.verify(refreshToken);
@@ -148,7 +145,7 @@ export class AuthService {
         await this.refreshTokenRepo.save(record);
       }
     } catch {
-      // Invalid/expired token — consider already logged out
+      // ignore
     }
     return { message: 'Logged out' };
   }
@@ -175,7 +172,6 @@ export class AuthService {
     );
   }
 
-  /** Parse "7d" / "24h" / "60m" and add to now. */
   private addToNow(expiresIn: string): Date {
     const match = expiresIn.trim().match(/^(\d+)([smhd])$/);
     if (!match) {

@@ -18,7 +18,6 @@ export class WalletsService {
     });
   }
 
-  /** Get wallets for user with currency relation (for exam: method that fetches related model) */
   async getWalletsWithCurrency(userId: string): Promise<Wallet[]> {
     return this.findWalletsByUserId(userId);
   }
@@ -75,10 +74,6 @@ export class WalletsService {
     });
   }
 
-  /**
-   * อัปเดต balance และ/หรือ locked_balance (ใช้ใน Escrow, Order release, Transfer).
-   * ถ้าใส่ em จะ run ภายใน transaction เดียวกับ caller.
-   */
   async updateBalances(
     walletId: string,
     updates: { balance?: string; lockedBalance?: string },

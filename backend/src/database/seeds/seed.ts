@@ -142,7 +142,7 @@ async function runSeed() {
           maxOrderAmount: '0.2',
           paymentMethod: 'PromptPay',
           paymentTimeLimit: 15,
-          terms: 'โอนภายใน 15 นาที',
+          terms: 'Transfer within 15 minutes',
           status: AdStatus.ACTIVE,
         }),
       );

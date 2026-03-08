@@ -1,7 +1,3 @@
-/**
- * Validated environment variables.
- * Use ConfigService in app; this type documents required keys.
- */
 export interface EnvVariables {
   PORT: number;
   NODE_ENV: string;

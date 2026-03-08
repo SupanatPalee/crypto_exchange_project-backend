@@ -45,9 +45,6 @@ export class AdsService {
     });
   }
 
-  /**
-   * สร้าง Ad (type SELL = ล็อค balance ใน Escrow ทันที)
-   */
   async create(userId: string, dto: CreateAdDto): Promise<Ad> {
     if (dto.type !== AdType.SELL) {
       throw new BadRequestException('Only SELL ads are supported for now');
@@ -109,9 +106,6 @@ export class AdsService {
     return this.adRepository.save(ad);
   }
 
-  /**
-   * ยกเลิก Ad — อัพเดท status เป็น INACTIVE และคืน locked_balance กลับเป็น balance
-   */
   async cancel(id: string, userId: string): Promise<Ad> {
     const ad = await this.adRepository.findOne({
       where: { id, userId },

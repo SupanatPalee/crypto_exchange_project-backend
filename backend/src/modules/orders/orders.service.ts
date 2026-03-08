@@ -32,7 +32,6 @@ export class OrdersService {
     private readonly dataSource: DataSource,
   ) {}
 
-  /** Fetch order with related models (exam requirement) */
   async findOrderWithDetails(id: string): Promise<Order | null> {
     return this.orderRepository.findOne({
       where: { id },
@@ -181,9 +180,6 @@ export class OrdersService {
     return updated;
   }
 
-  /**
-   * Force release (สำหรับ Admin/Dispute) — โอน crypto ให้ buyer โดยไม่ตรวจ seller
-   */
   async forceReleaseOrder(orderId: string): Promise<Order> {
     const order = await this.findOne(orderId);
     if (!order) throw new NotFoundException('Order not found');

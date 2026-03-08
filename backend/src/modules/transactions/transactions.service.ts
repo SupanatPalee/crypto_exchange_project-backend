@@ -35,10 +35,6 @@ export class TransactionsService {
     });
   }
 
-  /**
-   * สร้าง transaction record — ใช้ตอน Order release, Deposit, Transfer, Withdraw.
-   * ถ้าใส่ em จะ save ภายใน transaction เดียวกับ caller.
-   */
   async create(
     data: CreateTransactionData,
     em?: EntityManager,

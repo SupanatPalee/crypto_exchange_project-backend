@@ -11,7 +11,7 @@ export default registerAs(
     password: process.env.DB_PASSWORD || 'crypto_secret',
     database: process.env.DB_NAME || 'crypto_exchange',
     autoLoadEntities: true,
-    synchronize: false, // use migrations in production
+    synchronize: false,
     logging: process.env.NODE_ENV === 'development',
   }),
 );

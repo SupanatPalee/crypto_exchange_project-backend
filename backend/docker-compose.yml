@@ -1,0 +1,34 @@
+# Crypto Exchange Backend — PostgreSQL for local development
+#
+# ถ้าคุณใช้ pgvector (หรือ PostgreSQL ตัวอื่น) อยู่แล้ว:
+#   - ไม่ต้องรัน docker-compose นี้
+#   - ใช้ .env ชี้ไปที่ DB ที่มีอยู่ (localhost:5432, database=crypto_exchange)
+#   - สร้าง database ด้วย: docker exec pgvector psql -U postgres -c "CREATE DATABASE crypto_exchange;"
+#
+# ถ้าต้องการรัน PostgreSQL แยก (ไม่มี pgvector):
+#   - เปลี่ยนพอร์ตใน .env เป็น 5433 และด้านล่างใช้ "5433:5432" เพื่อไม่ชนกับ pgvector
+#   - จากนั้นรัน: docker-compose up -d
+#
+# Usage (เมื่อใช้ PostgreSQL แยก): docker-compose up -d
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: crypto_exchange_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-crypto}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crypto_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-crypto_exchange}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-crypto} -d ${POSTGRES_DB:-crypto_exchange}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

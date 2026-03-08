@@ -1,0 +1,131 @@
+erDiagram
+    users ||--o{ wallets : "has"
+    users ||--o{ ads : "creates"
+    users ||--o{ orders : "buyer"
+    users ||--o{ orders : "seller"
+    users ||--o{ disputes : "raised_by"
+    users ||--o{ disputes : "resolved_by"
+    users ||--o{ user_ratings : "rated_by"
+    users ||--o{ user_ratings : "rated_user"
+
+    currencies ||--o{ wallets : "currency"
+    currencies ||--o{ ads : "crypto"
+    currencies ||--o{ ads : "fiat"
+
+    ads ||--o{ orders : "ad"
+    orders ||--o{ transactions : "order"
+    orders ||--o| disputes : "order"
+    orders ||--o{ user_ratings : "order"
+
+    wallets ||--o{ transactions : "wallet"
+
+    users {
+        uuid id PK
+        varchar email UK "not null"
+        varchar password_hash "not null"
+        varchar full_name "not null"
+        varchar phone UK
+        varchar kyc_status "PENDING,VERIFIED,REJECTED"
+        boolean is_active "default true"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    currencies {
+        uuid id PK
+        varchar code UK "BTC,ETH,XRP,DOGE,THB,USD"
+        varchar name "not null"
+        varchar type "CRYPTO,FIAT"
+        int decimal_places
+        boolean is_active "default true"
+    }
+
+    wallets {
+        uuid id PK
+        uuid user_id FK "not null"
+        uuid currency_id FK "not null"
+        decimal balance "ยอดใช้ได้, default 0"
+        decimal locked_balance "Escrow, default 0"
+        varchar address "รับโอนนอกระบบ"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ads {
+        uuid id PK
+        uuid user_id FK "not null"
+        uuid crypto_id FK "not null"
+        uuid fiat_id FK "not null"
+        varchar type "BUY,SELL"
+        decimal price_per_unit "not null"
+        decimal total_amount "not null"
+        decimal available_amount "not null"
+        decimal min_order_amount
+        decimal max_order_amount
+        varchar payment_method
+        int payment_time_limit "นาที"
+        text terms
+        varchar status "ACTIVE,INACTIVE,COMPLETED"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    orders {
+        uuid id PK
+        uuid ad_id FK "not null"
+        uuid buyer_id FK "not null"
+        uuid seller_id FK "not null"
+        decimal crypto_amount "not null"
+        decimal fiat_amount "not null"
+        decimal price_per_unit "not null"
+        varchar payment_method
+        varchar payment_proof "URL สลิป"
+        varchar status "PENDING,PAID,COMPLETED,CANCELLED,DISPUTED"
+        timestamp paid_at
+        timestamp completed_at
+        timestamp cancelled_at
+        timestamp expired_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    transactions {
+        uuid id PK
+        uuid wallet_id FK "not null"
+        uuid order_id FK "nullable"
+        varchar type "DEPOSIT,WITHDRAW,BUY,SELL,TRANSFER_IN,OUT"
+        decimal amount "not null"
+        decimal fee "default 0"
+        decimal balance_before
+        decimal balance_after
+        varchar status "PENDING,COMPLETED,FAILED"
+        varchar tx_hash "Blockchain"
+        varchar external_address
+        text note
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    disputes {
+        uuid id PK
+        uuid order_id FK "not null"
+        uuid raised_by FK "not null"
+        uuid resolved_by FK "nullable"
+        text reason "not null"
+        varchar evidence_url
+        varchar status "OPEN,UNDER_REVIEW,RESOLVED"
+        text resolution
+        timestamp resolved_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    user_ratings {
+        uuid id PK
+        uuid order_id FK "not null"
+        uuid rated_by FK "not null"
+        uuid rated_user FK "not null"
+        int score "1-5"
+        text comment
+        timestamp created_at
+    }

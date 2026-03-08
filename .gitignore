@@ -1,0 +1,51 @@
+# ========== โฟลเดอร์/ไฟล์ที่ไม่ส่งขึ้น GitHub ==========
+
+# เอกสาร / PRD / diagram / โจทย์
+docs/
+backend/docs/
+crypto-exchange-prd.md
+dbdiagram.io.md
+exam_test_backend.md
+
+# สคริปต์ทดสอบ / คำสั่ง test
+backend/scripts/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test
+coverage/
+.nyc_output/
+
+# Misc
+*.pid
+.cache/

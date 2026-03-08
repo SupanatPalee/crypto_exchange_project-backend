@@ -3,6 +3,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseConfig from './config/database.config.js';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
 import {
   Currency,
   User,
@@ -66,7 +68,7 @@ import { TransfersModule } from './modules/transfers/transfers.module.js';
     DisputesModule,
     TransfersModule,
   ],
-  controllers: [],
-  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
+  controllers: [AppController],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}

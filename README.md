@@ -39,7 +39,29 @@ npm run start:dev
 
 Server: **http://localhost:3000**
 
-Use values from `.env.example` (matches docker-compose: `crypto` / `crypto_secret` / `crypto_exchange`). If port 5432 is in use, set `DB_PORT=5433` and update `ports` in `docker-compose.yml`.
+### Database & Docker (choose one)
+
+**Option A — Use this project’s PostgreSQL (docker-compose)**  
+1. `cp .env.example .env` (uses `DB_USERNAME=crypto`, `DB_PASSWORD=crypto_secret`)  
+2. `docker-compose up -d`  
+3. `npm run migration:run` then `npm run seed` then `npm run start:dev`
+
+**Option B — Use existing PostgreSQL (e.g. pgvector, local postgres)**  
+1. Create `.env` and set `DB_USERNAME` / `DB_PASSWORD` to that server’s user and password (e.g. `postgres` / `postgres`)  
+2. Ensure database `crypto_exchange` exists (e.g. `createdb crypto_exchange` or create via your DB tool)  
+3. `npm run migration:run` then `npm run seed` then `npm run start:dev`
+
+If you see **"password authentication failed for user 'crypto'"**: the app is using default user `crypto` but your PostgreSQL uses another user. Set `DB_USERNAME` and `DB_PASSWORD` in `.env` to match your PostgreSQL and restart the app.
+
+### Useful commands
+
+| Command | Description |
+|--------|-------------|
+| `docker-compose up -d` | Start PostgreSQL container (Option A) |
+| `docker-compose down` | Stop and remove container |
+| `npm run migration:run` | Create tables |
+| `npm run migration:revert` | Undo last migration |
+| `npm run seed` | Load test data |
 
 ## Auth
 
